@@ -22,8 +22,10 @@ BodyPark ATOM 产品家族目前有两条「首页」线：
 
 | 文档 | 内容 | 状态 |
 |---|---|---|
-| [ATOM-APP-00-总纲.md](ATOM-APP-00-总纲.md) | 总览：目标 / 范围 / 基线方案 / 待讨论决策清单 D1–D12 | 🚧 v0.2，随讨论迭代 |
-| [ATOM-APP-REF-Companion呼应点.md](ATOM-APP-REF-Companion呼应点.md) | 设备端 Companion Home 逻辑提炼：可呼应的概念、机制与参数 | ✅ 参考基线 |
+| [ATOM-APP-00-总纲.md](ATOM-APP-00-总纲.md) | 总览：目标 / 范围 / 基线方案 / 待讨论决策清单 D1–D16 | 🚧 v0.3，随讨论迭代 |
+| [ATOM-APP-01-首页立意-三区模型.md](ATOM-APP-01-首页立意-三区模型.md) | 立意：首页=PLAN 闭环每日渲染面;三区模型 / CTA 状态矩阵 / 社区承接 | 🚧 v0.1 讨论稿 |
+| [ATOM-APP-REF-Companion呼应点.md](ATOM-APP-REF-Companion呼应点.md) | 设备端 Companion Home 逻辑提炼：可呼应的概念、机制与参数（R1–R10） | ✅ 参考基线 |
+| [ATOM-APP-REF-目标偏好呼应点.md](ATOM-APP-REF-目标偏好呼应点.md) | [ATOM-UserGoalPreference-and-OnBoarding](https://github.com/Alexis-Lin/ATOM-UserGoalPreference-and-OnBoarding) 逻辑提炼：首页的个性化引擎（P1–P8） | ✅ 参考基线 |
 | [v1-基线方案/](v1-基线方案/) | 历史阶段方案 v1（2026-06-08）：改版方案说明 + 可交互原型 HTML（浏览器打开,可切新/老用户与设备异常态） | ✅ 只读存档 |
 
 > 后续按需增补（沿用设备端仓库的编号习惯）：
