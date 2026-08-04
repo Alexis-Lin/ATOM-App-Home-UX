@@ -37,10 +37,11 @@
   .warn{background:#fff;border-color:#999;border-width:2px}
   .hbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
   .hbar .box{flex:0 0 150px;margin:0}
-  .tabbar{display:flex;justify-content:space-around;align-items:center;border-top:1.5px solid var(--line);padding:8px 0 12px;background:#fff;position:sticky;bottom:0}
+  .tabbar{display:flex;gap:8px;align-items:center;border-top:1.5px solid var(--line);padding:8px 10px 12px;background:#fff;position:sticky;bottom:0}
+  .tabgroup{flex:1;display:flex;justify-content:space-around;border:1.5px dashed var(--line);border-radius:999px;padding:6px 0;background:#fafafa}
   .tab{font-size:10px;color:#999;text-align:center;width:52px}
   .tab .i{display:block;width:20px;height:20px;border:1.5px solid #bbb;border-radius:5px;margin:0 auto 3px}
-  .fab{width:46px;height:46px;border-radius:50%;border:2px solid #333;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;margin-top:-20px}
+  .fab{width:46px;height:46px;border-radius:50%;border:2px solid #333;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0}
   .hide{display:none!important}
   /* 图例 */
   .legend{width:230px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:12px}
@@ -66,7 +67,7 @@
   <div class="li"><span class="sw" style="background:var(--zoneA)"></span><span><b>A 今日执行区</b><br>排他:单一主卡+主CTA,永在首屏</span></div>
   <div class="li"><span class="sw" style="background:var(--zoneB)"></span><span><b>B 与我相关区</b><br>模块开关矩阵:只放关于我的事实</span></div>
   <div class="li"><span class="sw" style="background:var(--zoneC)"></span><span><b>C 探索运营区</b><br>货架:降权/过滤/可折叠</span></div>
-  <p>顶部问候=人格层(一句话,永不长高)。⚡FAB=快速开练全局兜底(D15)。</p>
+  <p>顶部问候=人格层(一句话,永不长高)。底栏={[首页 训练 成长 我的]+[◎ATOM]}分离式布局(D19):◎ATOM=AI 全局入口,面板首排含 ⚡快速开练芯片(D15)。</p>
   <div class="snapnote" id="note"></div>
 </div>
 </div>
@@ -92,7 +93,7 @@ const shelves=(tips)=>`
   ${box('精选训练 / 精选计划 ▸▸','按 PREFERENCE 过滤:不推没器械的课、避开 disliked 动作','内容库 × pref(P6)')}
   ${box('＋ 创建自定义模板(单行折叠)','','用户模板')}
   ${box('(未来)社区 digest 卡位','D13 预留:摘要卡,点击去社区 Tab;feed 不上首页','社区服务',null,null,'')}`;
-const tabbar=`<div class="tabbar"><div class="tab"><span class="i"></span>首页</div><div class="tab"><span class="i"></span>动作库</div><div class="fab">⚡</div><div class="tab"><span class="i"></span>历史</div><div class="tab"><span class="i"></span>我的</div></div>`;
+const tabbar=`<div class="tabbar"><div class="tabgroup"><div class="tab" style="color:#333;font-weight:700"><span class="i" style="border-color:#333"></span>首页</div><div class="tab"><span class="i"></span>训练</div><div class="tab"><span class="i"></span>成长</div><div class="tab"><span class="i"></span>我的</div></div><div class="fab">◎<span>ATOM</span></div></div>`;
 
 // —— 7 个快照 ——
 const S={
