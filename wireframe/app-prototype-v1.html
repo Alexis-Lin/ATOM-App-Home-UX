@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATOM App 新框架交互原型 v1 · iPhone 17 (402×874pt)</title>
+<style>
+  :root{
+    --lime:#C8F31D; --lime-deep:#9CC400; --ink:#111; --gray:#8a8a8e; --line:#e6e6ea;
+    --card:#f5f5f7; --dark:#141414; --r:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  body{font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;background:#e8e8ec;color:var(--ink);
+       display:flex;flex-direction:column;align-items:center;padding:20px 10px 50px}
+  h1.pg{font-size:17px;margin-bottom:2px}
+  p.sub{font-size:12px;color:#777;margin-bottom:14px;text-align:center;max-width:640px;line-height:1.6}
+
+  /* ===== iPhone 17 frame: 402×874 pt ===== */
+  .phone{width:402px;height:874px;background:#fff;border:10px solid #111;border-radius:58px;
+         overflow:hidden;position:relative;box-shadow:0 24px 70px rgba(0,0,0,.3);flex-shrink:0}
+  .island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:118px;height:32px;
+          background:#111;border-radius:20px;z-index:50}
+  .sbar{display:flex;justify-content:space-between;align-items:center;padding:16px 30px 6px;font-size:14px;font-weight:600}
+  .screen{position:absolute;inset:0;display:flex;flex-direction:column}
+  .pages{flex:1;overflow:hidden;position:relative}
+  .page{position:absolute;inset:0;overflow-y:auto;padding-bottom:14px;scrollbar-width:none;display:none}
+  .page::-webkit-scrollbar{display:none}
+  .page.on{display:block}
+
+  /* ===== 通用 ===== */
+  .px{padding-left:18px;padding-right:18px}
+  .sec{margin-top:20px}
+  .shead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+  .shead h2{font-size:18px;font-weight:800;letter-spacing:-.3px}
+  .shead .more{font-size:13px;color:var(--gray);cursor:pointer}
+  .hscroll{display:flex;gap:10px;overflow-x:auto;padding:0 18px 6px;scrollbar-width:none}
+  .hscroll::-webkit-scrollbar{display:none}
+  .chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;
+        padding:7px 14px;font-size:13px;color:#555;background:#fff;cursor:pointer;white-space:nowrap}
+  .chip.on{background:var(--ink);color:var(--lime);border-color:var(--ink);font-weight:700}
+
+  /* ===== 底部导航:{[tab×4][◎AI]} ===== */
+  .dock{display:flex;gap:10px;align-items:center;padding:10px 14px 26px;background:rgba(255,255,255,.94);
+        backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+  .tabgroup{flex:1;display:flex;justify-content:space-around;background:var(--card);border-radius:999px;padding:7px 4px}
+  .tb{text-align:center;font-size:10.5px;color:#999;width:64px;cursor:pointer;padding:3px 0;border-radius:999px}
+  .tb .ic{font-size:19px;display:block;line-height:1.25;filter:grayscale(1);opacity:.55}
+  .tb.on{color:var(--ink);font-weight:800}
+  .tb.on .ic{filter:none;opacity:1}
+  .aibtn{width:54px;height:54px;border-radius:50%;background:var(--ink);color:var(--lime);display:flex;
+         flex-direction:column;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+         box-shadow:0 6px 18px rgba(200,243,29,.45);font-weight:800}
+  .aibtn .s{font-size:20px;line-height:1}
+  .aibtn .t{font-size:8.5px;letter-spacing:.5px;margin-top:1px}
+
+  /* ===== 首页 ===== */
+  .greet{padding:6px 18px 0;display:flex;align-items:flex-start;justify-content:space-between}
+  .greet h2{font-size:23px;font-weight:800;letter-spacing:-.3px}
+  .natter{font-size:13px;color:#667;margin-top:4px;max-width:290px}
+  .bell{position:relative;width:38px;height:38px;border-radius:50%;background:var(--card);display:flex;
+        align-items:center;justify-content:center;font-size:17px;cursor:pointer;flex-shrink:0}
+  .bell i{position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:#ff3b30;border:1.5px solid #fff}
+  .devrow{display:flex;align-items:center;gap:8px;margin:12px 18px 0;background:var(--card);border-radius:14px;
+          padding:9px 14px;font-size:13px}
+  .devrow .g{width:8px;height:8px;border-radius:50%;background:#34c759}
+  .devrow .meta{margin-left:auto;color:var(--gray);font-size:12px}
+  /* A 区 今日主卡 */
+  .today{margin:14px 18px 0;border-radius:22px;overflow:hidden;background:var(--dark);color:#fff}
+  .today .top{padding:18px 18px 12px}
+  .today .lab{font-size:11.5px;color:var(--lime);font-weight:800;letter-spacing:.5px}
+  .today h3{font-size:22px;font-weight:800;margin:6px 0 3px}
+  .today .meta{font-size:13px;color:#9a9a9f}
+  .today .why{font-size:12px;color:#c9d69a;margin-top:9px;padding-top:9px;border-top:1px solid #2a2a2a}
+  .today .bot{display:flex;align-items:center;justify-content:space-between;padding:12px 18px 16px}
+  .today .prog{font-size:12px;color:#888}
+  .today .prog b{color:#fff}
+  .gobtn{background:var(--lime);color:var(--ink);border:0;border-radius:999px;padding:12px 26px;
+         font-size:15px;font-weight:800;cursor:pointer}
+  /* B 区 */
+  .goalcard{margin:12px 18px 0;background:var(--card);border-radius:16px;padding:13px 15px;cursor:pointer}
+  .goalcard .r1{display:flex;justify-content:space-between;font-size:13px;font-weight:700}
+  .goalcard .r1 span{color:var(--gray);font-weight:400;font-size:12px}
+  .pbar{height:7px;background:#e2e2e7;border-radius:4px;margin-top:9px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:62%;background:var(--lime-deep);border-radius:4px}
+  .goalcard .r2{font-size:11.5px;color:var(--gray);margin-top:7px}
+  .week{display:flex;gap:6px;margin:12px 18px 0}
+  .day{flex:1;text-align:center;padding:8px 0;border-radius:12px;background:var(--card)}
+  .day span{font-size:10.5px;color:var(--gray);display:block}
+  .day b{font-size:14px;margin-top:1px;display:block}
+  .day em{font-style:normal;display:block;font-size:9px;color:var(--lime-deep)}
+  .day.hit{background:#eef8cd}
+  .day.now{background:var(--ink);color:#fff}
+  .day.now span{color:#999}
+  .stats{display:flex;gap:8px;margin:12px 18px 0}
+  .st{flex:1;background:var(--card);border-radius:14px;padding:11px 0;text-align:center}
+  .st b{font-size:18px;font-weight:800;display:block}
+  .st b em{font-style:normal;font-size:11px;font-weight:600;color:var(--gray)}
+  .st span{font-size:10.5px;color:var(--gray)}
+  .act{flex:0 0 285px;border-radius:16px;padding:15px;color:#fff;background:linear-gradient(120deg,#1c2a10,#3d5a14)}
+  .act .tag{display:inline-block;background:var(--lime);color:var(--ink);font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px}
+  .act h5{font-size:15px;font-weight:800;margin:8px 0 2px}
+  .act p{font-size:11.5px;color:rgba(255,255,255,.72)}
+  .act .ft{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:10.5px;color:rgba(255,255,255,.6)}
+  .act .join{background:#fff;color:var(--ink);font-size:12px;font-weight:800;border:0;border-radius:999px;padding:6px 14px}
+  .thin{margin:0 18px;background:var(--card);border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:12px;cursor:pointer}
+  .thin .cv{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,#2b2b2b,#4a4a42);flex-shrink:0}
+  .thin b{font-size:14px;display:block}
+  .thin span{font-size:12px;color:var(--gray)}
+  .thin .arr{margin-left:auto;color:#bbb}
+
+  /* ===== 训练 Tab ===== */
+  .seg{display:flex;background:var(--card);border-radius:999px;padding:4px;margin:10px 18px 0}
+  .seg button{flex:1;border:0;background:transparent;border-radius:999px;padding:9px 0;font-size:14px;font-weight:600;color:#777;cursor:pointer}
+  .seg button.on{background:var(--ink);color:var(--lime);font-weight:800}
+  .subpage{display:none}
+  .subpage.on{display:block}
+  .gcard{margin:12px 18px 0;border:1.5px solid var(--line);border-radius:18px;padding:15px}
+  .gcard .hd{display:flex;align-items:center;gap:8px}
+  .gcard .pri{background:var(--lime);color:var(--ink);font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px}
+  .gcard .pri.p2{background:var(--card);color:#777}
+  .gcard b{font-size:15px}
+  .gcard .quote{font-size:12px;color:#667;margin-top:6px}
+  .gcard .pv{margin-top:10px}
+  .planwk{margin:14px 18px 0;background:var(--card);border-radius:18px;padding:15px}
+  .planwk .hd{display:flex;justify-content:space-between;font-size:14px;font-weight:800;margin-bottom:10px}
+  .planwk .hd span{font-weight:400;font-size:12px;color:var(--gray)}
+  .prow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #e9e9ee;font-size:13px}
+  .prow:last-child{border:0}
+  .prow .d{width:34px;font-size:11px;color:var(--gray)}
+  .prow .done{color:var(--lime-deep);font-weight:800}
+  .prow .todaytag{background:var(--ink);color:var(--lime);font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px}
+  .prow .go{margin-left:auto;font-size:12px;font-weight:700;color:var(--lime-deep);cursor:pointer}
+  .btnrow{display:flex;gap:8px;margin:14px 18px 0}
+  .obtn{flex:1;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:11px 0;font-size:13px;font-weight:700;cursor:pointer}
+  .wk{flex:0 0 158px}
+  .wk .cover{height:110px;border-radius:14px;background:linear-gradient(135deg,#2b2b2b,#4a4a42);position:relative}
+  .wk .cover.c2{background:linear-gradient(135deg,#1d2b20,#3c5a40)}
+  .wk .cover.c3{background:linear-gradient(135deg,#2a2030,#54406a)}
+  .wk .du{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:999px}
+  .wk h5{font-size:13.5px;font-weight:700;margin-top:7px}
+  .wk p{font-size:11.5px;color:var(--gray)}
+  .note{margin:10px 18px 0;font-size:11.5px;color:var(--gray)}
+  .mgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:12px 18px 0}
+  .mv{background:var(--card);border-radius:14px;padding:12px 0 10px;text-align:center;cursor:pointer}
+  .mv .cir{width:54px;height:54px;border-radius:50%;background:#e2e2e7;margin:0 auto 7px}
+  .mv b{font-size:12px;font-weight:600}
+
+  /* ===== 成长 Tab ===== */
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 18px 0}
+  .tile{border-radius:16px;padding:14px;background:var(--card)}
+  .tile.t2{background:#eef2fb}.tile.t3{background:#f3eefe}.tile.t4{background:#fdf1e3}
+  .tile span{font-size:12px;color:#667}
+  .tile b{display:block;font-size:24px;font-weight:800;margin-top:3px}
+  .tile b em{font-style:normal;font-size:13px;font-weight:600;color:var(--gray)}
+  .chart{margin:12px 18px 0;background:var(--card);border-radius:18px;padding:15px}
+  .chart .hd{font-size:14px;font-weight:800;margin-bottom:8px;display:flex;justify-content:space-between}
+  .chart .hd span{font-weight:400;font-size:12px;color:var(--gray)}
+  .badges{display:flex;gap:12px;overflow-x:auto;padding:12px 18px 4px;scrollbar-width:none}
+  .bdg{text-align:center;flex:0 0 76px}
+  .bdg .c{width:62px;height:62px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;
+          font-size:24px;background:#eef8cd;border:2px solid var(--lime-deep)}
+  .bdg.lock .c{background:var(--card);border-color:var(--line);filter:grayscale(1);opacity:.5}
+  .bdg span{font-size:10.5px;color:#555;display:block;line-height:1.3}
+  .rec{margin:10px 18px 0;background:var(--card);border-radius:16px;padding:13px 15px}
+  .rec .d{font-size:11px;color:var(--gray)}
+  .rec b{font-size:14px;display:block;margin:3px 0 6px}
+  .rec .m{display:flex;gap:18px;font-size:11.5px;color:#667}
+  .rec .m i{font-style:normal;display:block;font-size:13px;font-weight:800;color:var(--ink)}
+
+  /* ===== 我的 Tab ===== */
+  .mehd{display:flex;align-items:center;justify-content:space-between;padding:8px 18px 0}
+  .mehd h2{font-size:24px;font-weight:800}
+  .ava{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#d7e6a0,#8fb339);position:relative}
+  .ava i{position:absolute;bottom:-3px;right:-6px;background:var(--lime);color:var(--ink);font-size:8.5px;font-weight:800;
+         padding:1.5px 6px;border-radius:6px;font-style:normal}
+  .plus{margin:14px 18px 0;border-radius:18px;background:linear-gradient(120deg,#122212,#274d27);color:#fff;padding:16px}
+  .plus .r1{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px}
+  .plus .r1 .b{background:var(--lime);color:var(--ink);padding:2px 8px;border-radius:6px;font-size:12px}
+  .plus .r2{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:11.5px;color:#9fbf9f}
+  .plus .up{background:var(--lime);color:var(--ink);border:0;border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:800;cursor:pointer}
+  .mlist{margin:8px 18px 0}
+  .mli{display:flex;align-items:center;gap:12px;padding:14px 2px;border-bottom:1px solid #efeff3;font-size:14.5px;cursor:pointer}
+  .mli:last-child{border:0}
+  .mli .ic{width:26px;text-align:center;font-size:16px}
+  .mli .arr{margin-left:auto;color:#c2c2c8}
+  .mli .sub{margin-left:auto;font-size:12px;color:var(--gray);margin-right:6px}
+  .mgrp{margin-top:10px;padding:4px 18px 0;font-size:11.5px;color:var(--gray)}
+
+  /* ===== ◎ATOM 面板 ===== */
+  .veil{position:absolute;inset:0;background:rgba(0,0,0,.42);z-index:80;display:none}
+  .veil.on{display:block}
+  .sheet{position:absolute;left:0;right:0;bottom:0;height:78%;background:#fff;border-radius:26px 26px 0 0;z-index:90;
+         display:none;flex-direction:column;overflow:hidden}
+  .sheet.on{display:flex}
+  .sheet .hd{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 10px}
+  .sheet .hd b{font-size:16px;font-weight:800}
+  .sheet .hd .x{width:30px;height:30px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px}
+  .qchips{display:flex;gap:8px;overflow-x:auto;padding:2px 18px 12px;scrollbar-width:none}
+  .qchips::-webkit-scrollbar{display:none}
+  .qc{flex-shrink:0;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;background:#fff}
+  .qc.hot{background:var(--ink);color:var(--lime);border-color:var(--ink)}
+  .chat{flex:1;overflow-y:auto;padding:6px 18px;background:#fafafa}
+  .msg-u{background:var(--lime);border-radius:16px 16px 4px 16px;padding:11px 14px;font-size:13.5px;max-width:78%;margin:8px 0 8px auto;font-weight:600}
+  .msg-a{margin:8px 0;max-width:92%}
+  .msg-a .who{font-size:11px;color:var(--gray);margin-bottom:5px}
+  .msg-a .bub{background:#fff;border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:12px 14px;font-size:13.5px;line-height:1.55}
+  .course{margin-top:10px;background:var(--card);border-radius:14px;padding:12px}
+  .course b{font-size:14px}
+  .course .m{display:flex;gap:16px;font-size:11px;color:#667;margin-top:8px}
+  .course .m i{font-style:normal;display:block;font-size:15px;font-weight:800;color:var(--ink)}
+  .course .thumbs{display:flex;gap:6px;margin-top:10px}
+  .course .thumbs u{width:40px;height:40px;border-radius:8px;background:#e2e2e7;text-decoration:none}
+  .course .go2{margin-top:11px;display:flex;gap:8px}
+  .course .go2 .p{flex:1;background:var(--ink);color:var(--lime);border:0;border-radius:999px;padding:10px 0;font-size:13px;font-weight:800;cursor:pointer}
+  .course .go2 .s{flex:1;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:10px 0;font-size:13px;font-weight:600;cursor:pointer}
+  .inbar{display:flex;align-items:center;gap:10px;padding:10px 18px 24px;border-top:1px solid var(--line);background:#fff}
+  .inbar .fld{flex:1;background:var(--card);border-radius:999px;padding:12px 16px;font-size:13px;color:#999}
+  .inbar .mic{width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--lime);display:flex;align-items:center;justify-content:center;font-size:16px}
+  .ainote{text-align:center;font-size:10px;color:#bbb;padding-bottom:8px;background:#fff}
+</style>
+</head>
+<body>
+<h1 class="pg">ATOM App 新框架交互原型 v1</h1>
+<p class="sub">iPhone 17 逻辑分辨率 402×874pt · 底部导航 {[首页 训练 成长 我的] + ◎ATOM}(D19)· 四 Tab 可点 · ◎ATOM 弹出 Agent 面板 · 训练 Tab 内三段式(D17)· 灰块=占位,视觉语言另议(D6)</p>
+
+<div class="phone"><div class="island"></div><div class="screen">
+  <div class="sbar"><span>9:41</span><span>🛜 ▐▌▐▌</span></div>
+  <div class="pages">
+
+    <!-- ================= 首页 ================= -->
+    <div class="page on" id="pg-home">
+      <div class="greet">
+        <div>
+          <h2>早上好,Alex</h2>
+          <div class="natter">「离十月的婚礼还有 9 周——今天是推类日,继续。」</div>
+        </div>
+        <span class="bell">🔔<i></i></span>
+      </div>
+      <div class="devrow"><span class="g"></span><b>Atom 449C</b><span class="meta">已连接 · 82% · ⚙︎</span></div>
+
+      <!-- A 今日执行 -->
+      <div class="today">
+        <div class="top">
+          <div class="lab">今日训练 · 第 2/3 周</div>
+          <h3>上肢力量 · 推类日</h3>
+          <div class="meta">25 分钟 · 6 个动作 · 胸 / 肩 / 三头</div>
+          <div class="why">为什么:服务你的「改善圆肩」目标 · 需要哑铃 · 已避开腰部负荷</div>
+        </div>
+        <div class="bot">
+          <div class="prog">本周 <b>2/3</b> 次 · 连续 <b>🔥12</b> 天</div>
+          <button class="gobtn">开始训练</button>
+        </div>
+      </div>
+
+      <!-- B 与我相关 -->
+      <div class="goalcard" onclick="goTrain('plan')">
+        <div class="r1"><b>主目标 · 减脂 66 → 62 kg</b><span>全部目标 ›</span></div>
+        <div class="pbar"><i></i></div>
+        <div class="r2">已完成 62% · 本周 −0.4 kg · 数据口径 = 目标 − 现状</div>
+      </div>
+      <div class="week">
+        <div class="day hit"><span>二</span><b>02</b><em>✓</em></div>
+        <div class="day"><span>三</span><b>03</b></div>
+        <div class="day hit"><span>四</span><b>04</b><em>✓</em></div>
+        <div class="day"><span>五</span><b>05</b></div>
+        <div class="day hit"><span>六</span><b>06</b><em>✓</em></div>
+        <div class="day"><span>日</span><b>07</b></div>
+        <div class="day now"><span>今天</span><b>08</b></div>
+      </div>
+      <div class="stats">
+        <div class="st"><b>3<em>次</em></b><span>本周训练</span></div>
+        <div class="st"><b>86<em>分钟</em></b><span>本周时长</span></div>
+        <div class="st"><b>742</b><span>千卡消耗</span></div>
+      </div>
+
+      <!-- C 探索运营(薄层) -->
+      <div class="sec">
+        <div class="px shead"><h2>官方活动</h2><span class="more">全部 ›</span></div>
+        <div class="hscroll">
+          <div class="act">
+            <span class="tag">挑战赛</span>
+            <h5>8 月燃脂挑战</h5>
+            <p>连续训练 14 天,赢取专属奖牌与会员时长</p>
+            <div class="ft"><span>⏳ 剩 12 天 · 3,204 人已参加</span><button class="join">参加</button></div>
+          </div>
+          <div class="act" style="background:linear-gradient(120deg,#2a1030,#6a2d8f)">
+            <span class="tag">直播课</span>
+            <h5>周四晚 8 点 · 教练带练</h5>
+            <p>30 分钟全身循环,跟练即送积分</p>
+            <div class="ft"><span>📅 8 月 11 日</span><button class="join">预约</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="thin" onclick="goTrain('explore')">
+          <div class="cv"></div>
+          <div><b>背部与腿部强化 · 20 分钟</b><span>为你挑的一节 · 更多在「训练 › 探索」</span></div>
+          <span class="arr">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 训练 ================= -->
+    <div class="page" id="pg-train">
+      <div class="greet"><h2>训练</h2></div>
+      <div class="seg" id="trainseg">
+        <button class="on" onclick="seg('plan')">计划</button>
+        <button onclick="seg('explore')">探索</button>
+        <button onclick="seg('lib')">动作库</button>
+      </div>
+
+      <!-- 计划段 -->
+      <div class="subpage on" id="sp-plan">
+        <div class="sec"><div class="px shead"><h2>我的目标</h2><span class="more">编辑 / 排序 ›</span></div></div>
+        <div class="gcard">
+          <div class="hd"><span class="pri">主目标</span><b>减脂 66 → 62 kg</b></div>
+          <div class="quote">"十月婚礼想瘦一点" · 里程碑 10-02</div>
+          <div class="pv"><div class="pbar"><i></i></div></div>
+        </div>
+        <div class="gcard">
+          <div class="hd"><span class="pri p2">次目标</span><b>改善圆肩</b></div>
+          <div class="quote">"圆肩显背厚" · 体态基线已建立</div>
+        </div>
+        <div class="planwk">
+          <div class="hd">本期计划 · 第 2/3 周<span>上肢/下肢分化 · 每周 3 练</span></div>
+          <div class="prow"><span class="d">周二</span>下肢力量 · 蹲类<span class="done">✓ 已完成</span></div>
+          <div class="prow"><span class="d">周四</span>核心与体态<span class="done">✓ 已完成</span></div>
+          <div class="prow"><span class="d">今天</span>上肢力量 · 推类<span class="todaytag">今日</span><span class="go" onclick="tab('home')">去执行 ›</span></div>
+          <div class="prow"><span class="d">周日</span>休息 · 拉伸恢复</div>
+        </div>
+        <div class="btnrow">
+          <button class="obtn" onclick="openAtom()">✦ 和 ATOM 调整计划</button>
+          <button class="obtn">重新生成</button>
+        </div>
+        <div class="note">进度全景(雷达 / 人体图 / 阶梯)在目标详情页展开;客观记录见「成长」。</div>
+      </div>
+
+      <!-- 探索段 -->
+      <div class="subpage" id="sp-explore">
+        <div class="note" style="margin-top:14px">已按你的器械(哑铃 · 无深蹲架)与偏好过滤</div>
+        <div class="sec">
+          <div class="px shead"><h2>精选训练</h2><span class="more">全部 ›</span></div>
+          <div class="hscroll">
+            <div class="wk"><div class="cover"><span class="du">20 分钟</span></div><h5>背部与腿部强化</h5><p>肩 · 胸 · 上背</p></div>
+            <div class="wk"><div class="cover c2"><span class="du">15 分钟</span></div><h5>力量基础</h5><p>胸 · 臀 · 大腿</p></div>
+            <div class="wk"><div class="cover c3"><span class="du">30 分钟</span></div><h5>核心与体态</h5><p>腹 · 下背</p></div>
+          </div>
+        </div>
+        <div class="sec">
+          <div class="px shead"><h2>精选计划</h2><span class="more">全部 ›</span></div>
+          <div class="thin"><div class="cv" style="background:linear-gradient(120deg,#15202b,#2c4a5e)"></div>
+            <div><b>体态重塑 · 3 周计划</b><span>圆肩/骨盆 · 每周 3 次 · 9 节</span></div><span class="arr">›</span></div>
+        </div>
+        <div class="sec">
+          <div class="thin"><div class="cv" style="background:#fff;border:1.5px dashed var(--line)"></div>
+            <div><b>＋ 创建自定义模板</b><span>常练组合保存,一键开练</span></div><span class="arr">›</span></div>
+        </div>
+      </div>
+
+      <!-- 动作库段 -->
+      <div class="subpage" id="sp-lib">
+        <div class="hscroll" style="padding-top:14px">
+          <span class="chip on">全部</span><span class="chip">无器械</span><span class="chip">哑铃</span>
+          <span class="chip">杠铃</span><span class="chip">弹力带</span><span class="chip">拉伸</span>
+        </div>
+        <div class="hscroll" style="padding-top:8px">
+          <span class="chip on">头颈</span><span class="chip">肩部</span><span class="chip">胸部</span>
+          <span class="chip">上背</span><span class="chip">腹部</span><span class="chip">臀腿</span>
+        </div>
+        <div class="mgrid">
+          <div class="mv"><div class="cir"></div><b>颈部侧屈拉伸</b></div>
+          <div class="mv"><div class="cir"></div><b>颈侧屈肌拉伸</b></div>
+          <div class="mv"><div class="cir"></div><b>颈后伸后仰</b></div>
+          <div class="mv"><div class="cir"></div><b>颈阔肌拉伸</b></div>
+          <div class="mv"><div class="cir"></div><b>慢速低头抬头</b></div>
+          <div class="mv"><div class="cir"></div><b>斜角肌拉伸</b></div>
+        </div>
+        <div class="note">动作详情含 AI 识别标记 · 主触达=课程内情境跳转(D17)</div>
+      </div>
+    </div>
+
+    <!-- ================= 成长 ================= -->
+    <div class="page" id="pg-growth">
+      <div class="greet"><h2>成长</h2><span class="bell">🗓</span></div>
+      <div class="tiles">
+        <div class="tile"><span>🏋 训练</span><b>53<em> 次</em></b></div>
+        <div class="tile t2"><span>🔥 最长连胜</span><b>14<em> 天</em></b></div>
+        <div class="tile t3"><span>⏱ 总时长</span><b>13.0<em> h</em></b></div>
+        <div class="tile t4"><span>📦 总组数</span><b>52</b></div>
+      </div>
+      <div class="chart">
+        <div class="hd">体重趋势<span>近 8 周 · 目标 62kg</span></div>
+        <svg width="100%" height="86" viewBox="0 0 320 86">
+          <line x1="0" y1="70" x2="320" y2="70" stroke="#ddd" stroke-dasharray="4 4"/>
+          <polyline points="0,18 45,22 90,20 135,30 180,34 225,44 270,50 320,56" fill="none" stroke="#9CC400" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="320" cy="56" r="4" fill="#111"/>
+        </svg>
+        <div class="note" style="margin:6px 0 0;padding:0">66.0 → 64.5 kg · 距目标 2.5 kg(Target − STATUS)</div>
+      </div>
+      <div class="sec"><div class="px shead"><h2>成就墙</h2><span class="more">全部 ›</span></div></div>
+      <div class="badges">
+        <div class="bdg"><div class="c">🔥</div><span>连续 7 天</span></div>
+        <div class="bdg"><div class="c">🏅</div><span>连续 14 天</span></div>
+        <div class="bdg"><div class="c">💯</div><span>累计 50 练</span></div>
+        <div class="bdg lock"><div class="c">🏆</div><span>连续 30 天</span></div>
+        <div class="bdg lock"><div class="c">⚡</div><span>累计 100 练</span></div>
+      </div>
+      <div class="sec"><div class="px shead"><h2>训练记录</h2><span class="more">日历 ›</span></div></div>
+      <div class="rec">
+        <div class="d">8 月 7 日 · 周四</div><b>核心与体态 · 30 分钟</b>
+        <div class="m"><span><i>6</i>动作</span><span><i>14</i>组</span><span><i>B+</i>质量分</span><span><i>212</i>千卡</span></div>
+      </div>
+      <div class="rec">
+        <div class="d">8 月 5 日 · 周二</div><b>下肢力量 · 蹲类 · 28 分钟</b>
+        <div class="m"><span><i>5</i>动作</span><span><i>15</i>组</span><span><i>A−</i>质量分</span><span><i>246</i>千卡</span></div>
+      </div>
+    </div>
+
+    <!-- ================= 我的 ================= -->
+    <div class="page" id="pg-me">
+      <div class="mehd"><h2>Hi, Alex</h2><div class="ava"><i>Plus</i></div></div>
+      <div class="plus">
+        <div class="r1"><span class="b">Plus</span>会员 · 已生效</div>
+        <div class="r2"><span>续费时间 08/06/2027</span><button class="up">升级至 Pro</button></div>
+      </div>
+      <div class="mgrp">设备与账户</div>
+      <div class="mlist">
+        <div class="mli"><span class="ic">📷</span>设备管理<span class="sub">Atom 449C · 已连接</span><span class="arr">›</span></div>
+        <div class="mli"><span class="ic">💳</span>会员管理 / 兑换<span class="arr">›</span></div>
+        <div class="mli"><span class="ic">🎁</span>认领奖励(Kickstarter / 官网)<span class="arr">›</span></div>
+      </div>
+      <div class="mgrp">训练档案</div>
+      <div class="mlist">
+        <div class="mli"><span class="ic">🎯</span>目标与训练偏好<span class="sub">问卷 V1.2</span><span class="arr">›</span></div>
+        <div class="mli"><span class="ic">❤️</span>健康详情<span class="arr">›</span></div>
+      </div>
+      <div class="mgrp">系统</div>
+      <div class="mlist">
+        <div class="mli"><span class="ic">📏</span>单位设置<span class="arr">›</span></div>
+        <div class="mli"><span class="ic">🔊</span>声音输出<span class="arr">›</span></div>
+        <div class="mli"><span class="ic">💬</span>客服与社群(企业微信 / 私教)<span class="arr">›</span></div>
+        <div class="mli"><span class="ic">🛒</span>商店<span class="arr">›</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ◎ATOM 面板 -->
+  <div class="veil" id="veil" onclick="closeAtom()"></div>
+  <div class="sheet" id="sheet">
+    <div class="hd"><b>◎ ATOM</b><span class="x" onclick="closeAtom()">✕</span></div>
+    <div class="qchips">
+      <span class="qc hot">⚡ 快速开练</span><span class="qc">调整今天的课</span>
+      <span class="qc">为什么练这个?</span><span class="qc">记录体重</span>
+    </div>
+    <div class="chat">
+      <div class="msg-u">只有 15 分钟,给我一节哑铃练胸的</div>
+      <div class="msg-a">
+        <div class="who">✦ Atom AI · 思考完成</div>
+        <div class="bub">
+          按你的 15 分钟、哑铃器械和腰部伤病记录,安排了中等难度:
+          <div class="course">
+            <b>高效胸肌强化训练</b>
+            <div class="m"><span><i>15</i>分钟</span><span><i>7</i>动作</span><span><i>中等</i>难度</span></div>
+            <div class="thumbs"><u></u><u></u><u></u><u></u><u></u><u></u><u></u></div>
+            <div class="go2"><button class="p">开始训练</button><button class="s">换几个动作</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="inbar"><div class="fld">发消息,或按住说话</div><div class="mic">🎙</div></div>
+    <div class="ainote">内容由 AI 生成 · Agent 深链到各页,不复刻模块</div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="dock">
+    <div class="tabgroup">
+      <div class="tb on" id="tb-home" onclick="tab('home')"><span class="ic">🏠</span>首页</div>
+      <div class="tb" id="tb-train" onclick="tab('train')"><span class="ic">🏋️</span>训练</div>
+      <div class="tb" id="tb-growth" onclick="tab('growth')"><span class="ic">📈</span>成长</div>
+      <div class="tb" id="tb-me" onclick="tab('me')"><span class="ic">👤</span>我的</div>
+    </div>
+    <div class="aibtn" onclick="openAtom()"><span class="s">◎</span><span class="t">ATOM</span></div>
+  </div>
+</div></div>
+
+<script>
+function tab(k){
+  ['home','train','growth','me'].forEach(x=>{
+    document.getElementById('pg-'+x).classList.toggle('on',x===k);
+    document.getElementById('tb-'+x).classList.toggle('on',x===k);
+  });
+}
+function seg(k){
+  const map={plan:0,explore:1,lib:2};
+  ['plan','explore','lib'].forEach((x,i)=>{
+    document.getElementById('sp-'+x).classList.toggle('on',x===k);
+    document.querySelectorAll('#trainseg button')[i].classList.toggle('on',x===k);
+  });
+}
+function goTrain(s){tab('train');seg(s);}
+function openAtom(){document.getElementById('veil').classList.add('on');document.getElementById('sheet').classList.add('on');}
+function closeAtom(){document.getElementById('veil').classList.remove('on');document.getElementById('sheet').classList.remove('on');}
+</script>
+</body>
+</html>

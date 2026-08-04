@@ -102,6 +102,7 @@ BodyPark ATOM 手机 App 的首页 Home Tab 需要一轮优化设计。本项目
 | [`ATOM-APP-04-Tab架构与模块聚类.md`](ATOM-APP-04-Tab架构与模块聚类.md) | 五 Tab × 九模块聚类:ATOM 中央按钮 · 分期路径 · 护栏 | 🚧 v0.1 讨论稿 |
 | `ATOM-APP-REF-竞品首页扫描.md` + [`research/`](research/) | 9 产品竞品扫描提炼 + 三路原始报告 | ✅ |
 | [`wireframe/home-wireframe-v0.html`](wireframe/home-wireframe-v0.html) | 低保真线框:三区 × HS-1~7 快照可切换 | 🚧 v0 |
+| [`wireframe/app-prototype-v1.html`](wireframe/app-prototype-v1.html) | 全 App 框架交互原型(iPhone17 尺寸 · 四 Tab + ◎ATOM 面板 · 深链) | 🚧 v1 |
 | `ATOM-APP-0x-<模块>-PRD.md` | 各模块专项 PRD | 📝 按需 |
 | `ATOM-APP-技术设计.md` | 数据契约 / 与设备端共享服务复用（R8） | 📝 待定 |
 | `ATOM-APP-设计素材清单.md` | 视觉/动效素材交付清单 | 📝 待定 |
