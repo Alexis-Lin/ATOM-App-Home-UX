@@ -109,11 +109,28 @@
   .thin .arr{margin-left:auto;color:#bbb}
 
   /* ===== 训练 Tab ===== */
-  .seg{display:flex;background:var(--card);border-radius:999px;padding:4px;margin:10px 18px 0}
-  .seg button{flex:1;border:0;background:transparent;border-radius:999px;padding:9px 0;font-size:14px;font-weight:600;color:#777;cursor:pointer}
-  .seg button.on{background:var(--ink);color:var(--lime);font-weight:800}
-  .subpage{display:none}
-  .subpage.on{display:block}
+  .entryrow{display:flex;gap:10px;margin:16px 18px 0}
+  .entry{flex:1;display:flex;align-items:center;gap:9px;background:var(--card);border-radius:16px;padding:12px;cursor:pointer}
+  .entry .eic{width:34px;height:34px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 1px 4px rgba(0,0,0,.07);flex-shrink:0}
+  .entry b{font-size:13px;display:block}
+  .entry span:not(.eic):not(.arr){font-size:10.5px;color:var(--gray)}
+  .entry .arr{margin-left:auto;color:#bbb}
+  /* 动作库 全屏二级页 */
+  .libpage{position:absolute;inset:0;background:#fff;z-index:60;display:none;flex-direction:column;padding-top:52px}
+  .libpage.on{display:flex}
+  .libhd{display:flex;align-items:center;gap:10px;padding:4px 16px 8px}
+  .libhd .back{width:34px;height:34px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;flex-shrink:0}
+  .libtabs{flex:1;display:flex;gap:18px;padding-left:4px}
+  .lt{font-size:16px;font-weight:700;color:#999;cursor:pointer;padding-bottom:3px}
+  .lt.on{color:var(--ink);font-weight:800;border-bottom:3px solid var(--ink)}
+  .libbody{flex:1;display:flex;overflow:hidden;margin-top:8px}
+  .librail{width:76px;overflow-y:auto;border-right:1px solid var(--line);display:flex;flex-direction:column;scrollbar-width:none}
+  .librail span{padding:13px 0 13px 16px;font-size:13px;color:#666;cursor:pointer;border-left:3px solid transparent}
+  .librail span.on{color:var(--ink);font-weight:800;border-left-color:var(--lime-deep);background:#fafbf2}
+  .libgrid{flex:1;overflow-y:auto;padding:10px 14px 30px}
+  .cnt{font-size:12px;color:var(--gray);margin-bottom:10px}
+  .mgrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mv i.ai{font-style:normal;background:var(--lime);color:var(--ink);font-size:9px;font-weight:800;padding:1px 4px;border-radius:4px;margin-right:2px}
   .gcard{margin:12px 18px 0;border:1.5px solid var(--line);border-radius:18px;padding:15px}
   .gcard .hd{display:flex;align-items:center;gap:8px}
   .gcard .pri{background:var(--lime);color:var(--ink);font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px}
@@ -221,7 +238,7 @@
 </head>
 <body>
 <h1 class="pg">ATOM App 新框架交互原型 v1</h1>
-<p class="sub">iPhone 17 逻辑分辨率 402×874pt · 底部导航 {[首页 训练 成长 我的] + ◎ATOM}(D19)· 四 Tab 可点 · ◎ATOM 弹出 Agent 面板 · 训练 Tab 内三段式(D17)· 灰块=占位,视觉语言另议(D6)</p>
+<p class="sub">iPhone 17 逻辑分辨率 402×874pt · 底部导航 {[首页 训练 成长 我的] + ◎ATOM}(D19)· 四 Tab 可点 · ◎ATOM 弹出 Agent 面板 · 训练 Tab=计划主页+动作库全屏二级页+探索内联(D17 v0.2,无顶部分段)· 灰块=占位,视觉语言另议(D6)</p>
 
 <div class="phone"><div class="island"></div><div class="screen">
   <div class="sbar"><span>9:41</span><span>🛜 ▐▌▐▌</span></div>
@@ -300,82 +317,98 @@
       </div>
     </div>
 
-    <!-- ================= 训练 ================= -->
+    <!-- ================= 训练(计划为主页,无顶部分段) ================= -->
     <div class="page" id="pg-train">
-      <div class="greet"><h2>训练</h2></div>
-      <div class="seg" id="trainseg">
-        <button class="on" onclick="seg('plan')">计划</button>
-        <button onclick="seg('explore')">探索</button>
-        <button onclick="seg('lib')">动作库</button>
+      <div class="greet"><h2>训练</h2><span class="bell" onclick="openLib()">🔍</span></div>
+
+      <div class="sec"><div class="px shead"><h2>我的目标</h2><span class="more">编辑 / 排序 ›</span></div></div>
+      <div class="gcard">
+        <div class="hd"><span class="pri">主目标</span><b>减脂 66 → 62 kg</b></div>
+        <div class="quote">"十月婚礼想瘦一点" · 里程碑 10-02</div>
+        <div class="pv"><div class="pbar"><i></i></div></div>
+      </div>
+      <div class="gcard">
+        <div class="hd"><span class="pri p2">次目标</span><b>改善圆肩</b></div>
+        <div class="quote">"圆肩显背厚" · 体态基线已建立</div>
       </div>
 
-      <!-- 计划段 -->
-      <div class="subpage on" id="sp-plan">
-        <div class="sec"><div class="px shead"><h2>我的目标</h2><span class="more">编辑 / 排序 ›</span></div></div>
-        <div class="gcard">
-          <div class="hd"><span class="pri">主目标</span><b>减脂 66 → 62 kg</b></div>
-          <div class="quote">"十月婚礼想瘦一点" · 里程碑 10-02</div>
-          <div class="pv"><div class="pbar"><i></i></div></div>
-        </div>
-        <div class="gcard">
-          <div class="hd"><span class="pri p2">次目标</span><b>改善圆肩</b></div>
-          <div class="quote">"圆肩显背厚" · 体态基线已建立</div>
-        </div>
-        <div class="planwk">
-          <div class="hd">本期计划 · 第 2/3 周<span>上肢/下肢分化 · 每周 3 练</span></div>
-          <div class="prow"><span class="d">周二</span>下肢力量 · 蹲类<span class="done">✓ 已完成</span></div>
-          <div class="prow"><span class="d">周四</span>核心与体态<span class="done">✓ 已完成</span></div>
-          <div class="prow"><span class="d">今天</span>上肢力量 · 推类<span class="todaytag">今日</span><span class="go" onclick="tab('home')">去执行 ›</span></div>
-          <div class="prow"><span class="d">周日</span>休息 · 拉伸恢复</div>
-        </div>
-        <div class="btnrow">
-          <button class="obtn" onclick="openAtom()">✦ 和 ATOM 调整计划</button>
-          <button class="obtn">重新生成</button>
-        </div>
-        <div class="note">进度全景(雷达 / 人体图 / 阶梯)在目标详情页展开;客观记录见「成长」。</div>
+      <div class="planwk">
+        <div class="hd">本期计划 · 第 2/3 周<span>上肢/下肢分化 · 每周 3 练</span></div>
+        <div class="prow"><span class="d">周二</span>下肢力量 · 蹲类<span class="done">✓ 已完成</span></div>
+        <div class="prow"><span class="d">周四</span>核心与体态<span class="done">✓ 已完成</span></div>
+        <div class="prow"><span class="d">今天</span>上肢力量 · 推类<span class="todaytag">今日</span><span class="go" onclick="tab('home')">去执行 ›</span></div>
+        <div class="prow"><span class="d">周日</span>休息 · 拉伸恢复</div>
+      </div>
+      <div class="btnrow">
+        <button class="obtn" onclick="openAtom()">✦ 和 ATOM 调整计划</button>
+        <button class="obtn">重新生成</button>
       </div>
 
-      <!-- 探索段 -->
-      <div class="subpage" id="sp-explore">
-        <div class="note" style="margin-top:14px">已按你的器械(哑铃 · 无深蹲架)与偏好过滤</div>
-        <div class="sec">
-          <div class="px shead"><h2>精选训练</h2><span class="more">全部 ›</span></div>
-          <div class="hscroll">
-            <div class="wk"><div class="cover"><span class="du">20 分钟</span></div><h5>背部与腿部强化</h5><p>肩 · 胸 · 上背</p></div>
-            <div class="wk"><div class="cover c2"><span class="du">15 分钟</span></div><h5>力量基础</h5><p>胸 · 臀 · 大腿</p></div>
-            <div class="wk"><div class="cover c3"><span class="du">30 分钟</span></div><h5>核心与体态</h5><p>腹 · 下背</p></div>
+      <!-- 工具入口:动作库=全屏二级页 -->
+      <div class="entryrow">
+        <div class="entry" onclick="openLib()">
+          <span class="eic">🗂</span>
+          <div><b>动作库</b><span>500+ 动作 · 按部位/器械</span></div>
+          <span class="arr">›</span>
+        </div>
+        <div class="entry">
+          <span class="eic">＋</span>
+          <div><b>自定义模板</b><span>常练组合一键开练</span></div>
+          <span class="arr">›</span>
+        </div>
+      </div>
+
+      <!-- 探索:内联货架(向下滚动到达) -->
+      <div class="sec" id="explore">
+        <div class="px shead"><h2>探索课程</h2><span class="more">全部 ›</span></div>
+        <div class="note" style="margin:0 18px 8px">已按你的器械(哑铃 · 无深蹲架)与偏好过滤</div>
+        <div class="hscroll">
+          <div class="wk"><div class="cover"><span class="du">20 分钟</span></div><h5>背部与腿部强化</h5><p>肩 · 胸 · 上背</p></div>
+          <div class="wk"><div class="cover c2"><span class="du">15 分钟</span></div><h5>力量基础</h5><p>胸 · 臀 · 大腿</p></div>
+          <div class="wk"><div class="cover c3"><span class="du">30 分钟</span></div><h5>核心与体态</h5><p>腹 · 下背</p></div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="px shead"><h2>精选计划</h2><span class="more">全部 ›</span></div>
+        <div class="thin"><div class="cv" style="background:linear-gradient(120deg,#15202b,#2c4a5e)"></div>
+          <div><b>体态重塑 · 3 周计划</b><span>圆肩/骨盆 · 每周 3 次 · 9 节</span></div><span class="arr">›</span></div>
+      </div>
+      <div class="note">进度全景(雷达/人体图/阶梯)在目标详情页;客观记录见「成长」。</div>
+    </div>
+
+    <!-- ============ 动作库:全屏二级页(独占整屏排版) ============ -->
+    <div class="libpage" id="pg-lib">
+      <div class="libhd">
+        <span class="back" onclick="closeLib()">‹</span>
+        <div class="libtabs">
+          <span class="lt on">肌肉</span><span class="lt">器械</span><span class="lt">我的</span><span class="lt">全部</span>
+        </div>
+        <span class="back" style="font-size:16px">🔍</span>
+      </div>
+      <div class="hscroll" style="padding-top:6px">
+        <span class="chip on">✦ AI</span><span class="chip">无器械</span><span class="chip">哑铃</span>
+        <span class="chip">杠铃</span><span class="chip">弹力带</span><span class="chip">龙门架</span>
+      </div>
+      <div class="libbody">
+        <div class="librail">
+          <span class="on">头颈</span><span>肩部</span><span>胸部</span><span>上背</span><span>上臂</span>
+          <span>前臂</span><span>腹部</span><span>下背</span><span>臀部</span><span>大腿</span><span>小腿</span>
+        </div>
+        <div class="libgrid">
+          <div class="cnt">20 个动作</div>
+          <div class="mgrid2">
+            <div class="mv"><div class="cir"></div><b>颈部侧屈拉伸</b></div>
+            <div class="mv"><div class="cir"></div><b>颈部侧转低头拉伸</b></div>
+            <div class="mv"><div class="cir"></div><b><i class="ai">AI</i> 颈侧屈肌拉伸</b></div>
+            <div class="mv"><div class="cir"></div><b>颈后伸后仰(对抗)</b></div>
+            <div class="mv"><div class="cir"></div><b><i class="ai">AI</i> 颈阔肌拉伸</b></div>
+            <div class="mv"><div class="cir"></div><b>颈阔肌拉伸(摆动)</b></div>
+            <div class="mv"><div class="cir"></div><b><i class="ai">AI</i> 颈前屈拉伸</b></div>
+            <div class="mv"><div class="cir"></div><b>慢速低头抬头</b></div>
+            <div class="mv"><div class="cir"></div><b>慢速左右转头</b></div>
+            <div class="mv"><div class="cir"></div><b><i class="ai">AI</i> 斜角肌拉伸</b></div>
           </div>
         </div>
-        <div class="sec">
-          <div class="px shead"><h2>精选计划</h2><span class="more">全部 ›</span></div>
-          <div class="thin"><div class="cv" style="background:linear-gradient(120deg,#15202b,#2c4a5e)"></div>
-            <div><b>体态重塑 · 3 周计划</b><span>圆肩/骨盆 · 每周 3 次 · 9 节</span></div><span class="arr">›</span></div>
-        </div>
-        <div class="sec">
-          <div class="thin"><div class="cv" style="background:#fff;border:1.5px dashed var(--line)"></div>
-            <div><b>＋ 创建自定义模板</b><span>常练组合保存,一键开练</span></div><span class="arr">›</span></div>
-        </div>
-      </div>
-
-      <!-- 动作库段 -->
-      <div class="subpage" id="sp-lib">
-        <div class="hscroll" style="padding-top:14px">
-          <span class="chip on">全部</span><span class="chip">无器械</span><span class="chip">哑铃</span>
-          <span class="chip">杠铃</span><span class="chip">弹力带</span><span class="chip">拉伸</span>
-        </div>
-        <div class="hscroll" style="padding-top:8px">
-          <span class="chip on">头颈</span><span class="chip">肩部</span><span class="chip">胸部</span>
-          <span class="chip">上背</span><span class="chip">腹部</span><span class="chip">臀腿</span>
-        </div>
-        <div class="mgrid">
-          <div class="mv"><div class="cir"></div><b>颈部侧屈拉伸</b></div>
-          <div class="mv"><div class="cir"></div><b>颈侧屈肌拉伸</b></div>
-          <div class="mv"><div class="cir"></div><b>颈后伸后仰</b></div>
-          <div class="mv"><div class="cir"></div><b>颈阔肌拉伸</b></div>
-          <div class="mv"><div class="cir"></div><b>慢速低头抬头</b></div>
-          <div class="mv"><div class="cir"></div><b>斜角肌拉伸</b></div>
-        </div>
-        <div class="note">动作详情含 AI 识别标记 · 主触达=课程内情境跳转(D17)</div>
       </div>
     </div>
 
@@ -490,14 +523,12 @@ function tab(k){
     document.getElementById('tb-'+x).classList.toggle('on',x===k);
   });
 }
-function seg(k){
-  const map={plan:0,explore:1,lib:2};
-  ['plan','explore','lib'].forEach((x,i)=>{
-    document.getElementById('sp-'+x).classList.toggle('on',x===k);
-    document.querySelectorAll('#trainseg button')[i].classList.toggle('on',x===k);
-  });
+function goTrain(s){
+  tab('train');
+  if(s==='explore'){const el=document.getElementById('explore');el&&el.scrollIntoView({behavior:'smooth'});}
 }
-function goTrain(s){tab('train');seg(s);}
+function openLib(){document.getElementById('pg-lib').classList.add('on');}
+function closeLib(){document.getElementById('pg-lib').classList.remove('on');}
 function openAtom(){document.getElementById('veil').classList.add('on');document.getElementById('sheet').classList.add('on');}
 function closeAtom(){document.getElementById('veil').classList.remove('on');document.getElementById('sheet').classList.remove('on');}
 </script>

@@ -25,11 +25,11 @@ BodyPark ATOM 产品家族目前有两条「首页」线：
 | [ATOM-APP-00-总纲.md](ATOM-APP-00-总纲.md) | 总览：目标 / 范围 / 基线方案 / 待讨论决策清单 D1–D18 | 🚧 v0.4，随讨论迭代 |
 | [ATOM-APP-01-首页立意-三区模型.md](ATOM-APP-01-首页立意-三区模型.md) | 立意：首页=PLAN 闭环每日渲染面;三区模型 / CTA 状态矩阵 / 社区承接 | 🚧 v0.1 讨论稿 |
 | [ATOM-APP-02-信息架构与状态框架.md](ATOM-APP-02-信息架构与状态框架.md) | 模块落位 / 五维状态体系与分区状态机 / A 区决策树 / 快照 HS-1~8 | 🚧 v0.1 讨论稿 |
-| [ATOM-APP-03-计划Tab提案.md](ATOM-APP-03-计划Tab提案.md) | 动作库 Tab 升级「计划/训练」Tab：三段式 IA + 与首页分界规则 | 🚧 v0.1 讨论稿 |
+| [ATOM-APP-03-计划Tab提案.md](ATOM-APP-03-计划Tab提案.md) | 「训练」Tab：计划主页 + 动作库全屏二级页 + 与首页分界规则 | 🚧 v0.2 讨论稿 |
 | [ATOM-APP-04-Tab架构与模块聚类.md](ATOM-APP-04-Tab架构与模块聚类.md) | 五 Tab × 九模块聚类：首页/训练/ATOM(中央)/社区/我的 + 分期与护栏 | 🚧 v0.1 讨论稿 |
 | [ATOM-APP-REF-竞品首页扫描.md](ATOM-APP-REF-竞品首页扫描.md) | 9 产品竞品首页扫描（Peloton/Ladder/Fitness+/Keep/训记/咕咚/Strava/Fitbod/NTC）,原始报告在 [research/](research/) | ✅ 参考基线 |
 | [wireframe/home-wireframe-v0.html](wireframe/home-wireframe-v0.html) | 低保真线框：三区模型 × 状态快照 HS-1~7 可切换（浏览器打开） | 🚧 v0 |
-| [wireframe/app-prototype-v1.html](wireframe/app-prototype-v1.html) | 全 App 框架交互原型：iPhone17(402×874pt) · 四 Tab 可点 · 训练三段式 · ◎ATOM 面板 · 跨页深链 | 🚧 v1 |
+| [wireframe/app-prototype-v1.html](wireframe/app-prototype-v1.html) | 全 App 框架交互原型：iPhone17(402×874pt) · 四 Tab 可点 · 动作库全屏二级页 · ◎ATOM 面板 · 跨页深链 | 🚧 v1 |
 | [ATOM-APP-REF-Companion呼应点.md](ATOM-APP-REF-Companion呼应点.md) | 设备端 Companion Home 逻辑提炼：可呼应的概念、机制与参数（R1–R10） | ✅ 参考基线 |
 | [ATOM-APP-REF-目标偏好呼应点.md](ATOM-APP-REF-目标偏好呼应点.md) | [ATOM-UserGoalPreference-and-OnBoarding](https://github.com/Alexis-Lin/ATOM-UserGoalPreference-and-OnBoarding) 逻辑提炼：首页的个性化引擎（P1–P8） | ✅ 参考基线 |
 | [v1-基线方案/](v1-基线方案/) | 历史阶段方案 v1（2026-06-08）：改版方案说明 + 可交互原型 HTML（浏览器打开,可切新/老用户与设备异常态） | ✅ 只读存档 |
