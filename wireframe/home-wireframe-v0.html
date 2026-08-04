@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATOM 首页低保真线框 v0 · 三区模型 × 7 状态快照</title>
+<style>
+  :root{--ink:#333;--line:#c9c9cf;--note:#98989f;--zoneA:#6b7fd7;--zoneB:#5aa27a;--zoneC:#c08a4e;--bg:#f0f0f3}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC",sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;align-items:center;padding:20px 10px 60px}
+  h1{font-size:17px;margin-bottom:2px}
+  p.sub{font-size:12px;color:var(--note);margin-bottom:14px;text-align:center;max-width:640px}
+  /* 快照切换 */
+  .snaps{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:16px;max-width:660px}
+  .snaps button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:12px;color:#555;cursor:pointer}
+  .snaps button.on{background:#333;color:#fff;border-color:#333}
+  .wrap{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+  /* 手机框 */
+  .phone{width:340px;background:#fff;border:2px solid #888;border-radius:28px;overflow:hidden}
+  .screen{height:640px;overflow-y:auto;scrollbar-width:thin}
+  /* 线框元件 */
+  .zone{position:relative;border-left:4px solid transparent;padding:6px 10px 10px 14px}
+  .zone .ztag{position:absolute;left:-2px;top:6px;writing-mode:vertical-lr;font-size:9px;letter-spacing:2px;color:#fff;padding:6px 1px;border-radius:0 3px 3px 0}
+  .zA{border-left-color:var(--zoneA)} .zA .ztag{background:var(--zoneA)}
+  .zB{border-left-color:var(--zoneB)} .zB .ztag{background:var(--zoneB)}
+  .zC{border-left-color:var(--zoneC)} .zC .ztag{background:var(--zoneC)}
+  .box{border:1.5px dashed var(--line);border-radius:10px;padding:10px 12px;margin:6px 0;background:#fafafa}
+  .box.solid{border-style:solid}
+  .box h4{font-size:13px;font-weight:700}
+  .box .tx{font-size:12px;color:#666;margin-top:3px;line-height:1.5}
+  .box .src{display:block;font-size:10px;color:var(--note);margin-top:6px;font-family:ui-monospace,monospace}
+  .cta{display:inline-block;border:1.5px solid #333;border-radius:999px;padding:7px 18px;font-size:13px;font-weight:700;margin-top:8px;background:#fff}
+  .cta.sub2{border-color:var(--line);color:#888;font-weight:400;margin-left:6px}
+  .rowline{display:flex;align-items:center;gap:8px}
+  .rowline .grow{flex:1}
+  .pill{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:11px;color:#777;background:#fff}
+  .warn{background:#fff;border-color:#999;border-width:2px}
+  .hbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+  .hbar .box{flex:0 0 150px;margin:0}
+  .tabbar{display:flex;justify-content:space-around;align-items:center;border-top:1.5px solid var(--line);padding:8px 0 12px;background:#fff;position:sticky;bottom:0}
+  .tab{font-size:10px;color:#999;text-align:center;width:52px}
+  .tab .i{display:block;width:20px;height:20px;border:1.5px solid #bbb;border-radius:5px;margin:0 auto 3px}
+  .fab{width:46px;height:46px;border-radius:50%;border:2px solid #333;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;margin-top:-20px}
+  .hide{display:none!important}
+  /* 图例 */
+  .legend{width:230px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:12px}
+  .legend h3{font-size:13px;margin-bottom:8px}
+  .legend .li{display:flex;gap:8px;margin:7px 0;line-height:1.45}
+  .legend .sw{flex:0 0 14px;height:14px;border-radius:4px;margin-top:2px}
+  .legend p{color:#777;margin-top:10px;line-height:1.5}
+  .snapnote{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);color:#555}
+  .snapnote b{display:block;margin-bottom:3px}
+</style>
+</head>
+<body>
+<h1>ATOM App 首页 · 低保真线框 v0</h1>
+<p class="sub">三区模型(ATOM-APP-01)× 状态快照(ATOM-APP-02 §2.4)。灰阶=结构讨论,不代表视觉。每个模块底部标注数据来源。</p>
+
+<div class="snaps" id="snaps"></div>
+
+<div class="wrap">
+<div class="phone"><div class="screen" id="scr"></div></div>
+
+<div class="legend">
+  <h3>三区图例</h3>
+  <div class="li"><span class="sw" style="background:var(--zoneA)"></span><span><b>A 今日执行区</b><br>排他:单一主卡+主CTA,永在首屏</span></div>
+  <div class="li"><span class="sw" style="background:var(--zoneB)"></span><span><b>B 与我相关区</b><br>模块开关矩阵:只放关于我的事实</span></div>
+  <div class="li"><span class="sw" style="background:var(--zoneC)"></span><span><b>C 探索运营区</b><br>货架:降权/过滤/可折叠</span></div>
+  <p>顶部问候=人格层(一句话,永不长高)。⚡FAB=快速开练全局兜底(D15)。</p>
+  <div class="snapnote" id="note"></div>
+</div>
+</div>
+
+<script>
+// —— 元件模板 ——
+const box=(h,t,src,cta,cta2,cls='')=>`<div class="box ${cls}"><h4>${h}</h4>${t?`<div class="tx">${t}</div>`:''}${cta?`<span class="cta">${cta}</span>`:''}${cta2?`<span class="cta sub2">${cta2}</span>`:''}${src?`<span class="src">◈ ${src}</span>`:''}</div>`;
+const topbar=(greet,dev)=>`
+  <div style="padding:10px 14px 0">
+    <div class="rowline"><div class="grow"><div style="font-size:15px;font-weight:800">${greet}</div><div style="font-size:10px;color:#98989f;margin-top:2px">◈ 人格问候 Natter(D2) · 素材=mindset/情境</div></div><span class="pill">🔔·</span></div>
+    ${dev}
+  </div>`;
+const devOk=`<div class="box" style="padding:7px 12px"><div class="rowline"><span style="font-size:12px">● Atom 449C · 已连接</span><span class="grow"></span><span class="pill">电量▮▮▮</span></div></div>`;
+const devWarn=box('⚠ Atom 449C · 连接已断开','设备条警示态(非阻断异常留在这里,不接管 A 区)','v1 设备规则','','','warn');
+const devNone='';
+const zone=(z,tag,inner)=>`<div class="zone ${z}"><span class="ztag">${tag}</span>${inner}</div>`;
+const weekcal=box('周历 + Streak 🔥12','▢▣▢▣▣▢▢ ← 完成日打勾;口径=当日≥1组Set(R6,与设备端同源)','LOG / Streak 服务(D10)');
+const progress=(t)=>box('主目标进度模块(四选一,D16)',t||'进度条 ▓▓▓░░ 62% · 「减脂 66→62kg」<br>随最高优先目标切换形态(雷达/人体图/进度条/阶梯)','Target − STATUS(P4/P5)');
+const weekdata=box('本周数据条','3 次 · 86 分钟 · 742 千卡(候选降级/合并,§4)','LOG 汇总');
+const shelves=(tips)=>`
+  ${box('官方活动卡位 ▸▸','轮播横滑 · 倒计时/参与人数','运营位(三层结构)')}
+  ${tips?box('训练答疑 Tips ▸▸','仅新用户/早期展示','FAQ 内容'):''}
+  ${box('精选训练 / 精选计划 ▸▸','按 PREFERENCE 过滤:不推没器械的课、避开 disliked 动作','内容库 × pref(P6)')}
+  ${box('＋ 创建自定义模板(单行折叠)','','用户模板')}
+  ${box('(未来)社区 digest 卡位','D13 预留:摘要卡,点击去社区 Tab;feed 不上首页','社区服务',null,null,'')}`;
+const tabbar=`<div class="tabbar"><div class="tab"><span class="i"></span>首页</div><div class="tab"><span class="i"></span>动作库</div><div class="fab">⚡</div><div class="tab"><span class="i"></span>历史</div><div class="tab"><span class="i"></span>我的</div></div>`;
+
+// —— 7 个快照 ——
+const S={
+'HS-2 日常·今日有课':{
+ note:'默认主态。打开→开始训练 ≤2 次点击;主卡带「为什么」一句话(D14)。',
+ greet:'「早上好。离十月的婚礼还有 9 周,继续。」',dev:devOk,
+ A:box('今日训练卡','<b>上肢力量 · 推类日</b> · 25min · 6 动作<br><i>为什么:你的「改善圆肩」计划 · 第 2/3 周</i>','PLAN 今日课 + Target 派生文案(P1/P2)','开始训练','换一节','solid'),
+ B:progress()+weekcal+weekdata, C:shelves(false)},
+'HS-3 休息日':{
+ note:'不空白不焦虑(D8):人格表达接管,给恢复动线,预告明天。',
+ greet:'「今天按计划休息——长肌肉的正是这一天。」',dev:devOk,
+ A:box('恢复日卡','今天是计划内休息日<br><i>明天:下肢力量 · 蹲类日</i>','PLAN 休息日 + Natter(D8/P3)','开始拉伸 10min','明日预告','solid'),
+ B:progress()+weekcal, C:shelves(false)},
+'HS-4 训练后回流':{
+ note:'成果被看见:回流亮点卡出现(限时),进度模块前移一格。',
+ greet:'「练完了?今天的推举比上周稳多了。」',dev:devOk,
+ A:box('今日完成态卡','✓ 上肢力量已完成 · 26min · 动作质量 B+<br><i>本周 3/3 · 连续 13 天</i>','LOG 回流(P1)','看训练报告','加练/拉伸','solid'),
+ B:box('回流亮点卡(限时)','动作质量评分 + 能量签解锁提示(R5,与设备端共享解锁信号)','LOG / EnergyDraw 服务')+progress('进度条 ▓▓▓▓░ 65% ↑ 今日 +0.4%')+weekcal,
+ C:shelves(false)},
+'HS-5 无计划老用户':{
+ note:'生成计划为主 CTA,⚡快速开练兜底——不给货架当主角的机会。',
+ greet:'「想练点什么?我可以给你排个计划。」',dev:devOk,
+ A:box('生成计划英雄卡','回答 3 个问题,按你的目标和水平定制每周安排','Onboarding 问卷 V1.2(P7)','立即生成','⚡快速开练','solid'),
+ B:weekcal+weekdata, C:shelves(false)},
+'HS-1 新用户首开':{
+ note:'10 分钟完成首训路径无歧义;新手任务=清单兜底(D7:资料/偏好尽量前置到注册流)。',
+ greet:'「你好,我是 ATOM。先来 10 分钟试试?」',dev:devOk,
+ A:box('首训英雄卡','推荐 10 分钟入门体验课,认识你的 AI 教练','预置课程','开始首训','浏览预置计划','solid')+
+   box('新手任务清单 2/5','▓▓░░░ 连接设备✓ · 资料 · 偏好 · 摆放视频 · 首训','引导服务(v1 继承)'),
+ B:'', C:shelves(true)},
+'HS-6 设备断连·有课':{
+ note:'阻断型异常才接管 A 区;修复后直落今日训练(不回首页重新找)。',
+ greet:'「设备好像睡着了,叫醒它就能开练。」',dev:devNone,
+ A:box('⚠ 设备警示卡','Atom 449C 连接已断开——重新连接后开始今日训练<br><i>排队中:上肢力量 · 推类日 · 25min</i>','设备服务 + PLAN(v1 规则)','重新连接','排查帮助','warn solid'),
+ B:progress()+weekcal, C:shelves(false)},
+'HS-7 流失回访':{
+ note:'无负罪感,重启成本极低:小课找回状态,顺带允许调整计划。',
+ greet:'「好久不见。不用补课,我们从今天重新开始。」',dev:devOk,
+ A:box('欢迎回来卡','离上次训练 16 天——来节 8 分钟找回状态课?<br><i>也可以重新生成更轻的计划</i>','LOG 间隔判定 + Natter(P3 barrier)','找回状态 8min','调整计划','solid'),
+ B:weekcal, C:shelves(false)},
+};
+const order=['HS-1 新用户首开','HS-2 日常·今日有课','HS-3 休息日','HS-4 训练后回流','HS-5 无计划老用户','HS-6 设备断连·有课','HS-7 流失回访'];
+const snapsEl=document.getElementById('snaps');
+order.forEach(k=>{const b=document.createElement('button');b.textContent=k;b.onclick=()=>render(k);snapsEl.appendChild(b);});
+function render(k){
+  const s=S[k];
+  document.getElementById('scr').innerHTML=
+    topbar(s.greet,s.dev)+
+    zone('zA','A 今日执行',s.A)+
+    (s.B?zone('zB','B 与我相关',s.B):'')+
+    zone('zC','C 探索运营',s.C)+tabbar;
+  document.getElementById('note').innerHTML=`<b>${k}</b>${s.note}`;
+  [...snapsEl.children].forEach(b=>b.classList.toggle('on',b.textContent===k));
+}
+render('HS-2 日常·今日有课');
+</script>
+</body>
+</html>
