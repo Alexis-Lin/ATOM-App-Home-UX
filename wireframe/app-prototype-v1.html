@@ -108,13 +108,13 @@
   .thin span{font-size:12px;color:var(--gray)}
   .thin .arr{margin-left:auto;color:#bbb}
 
-  /* ===== 训练 Tab ===== */
-  .entryrow{display:flex;gap:10px;margin:16px 18px 0}
-  .entry{flex:1;display:flex;align-items:center;gap:9px;background:var(--card);border-radius:16px;padding:12px;cursor:pointer}
-  .entry .eic{width:34px;height:34px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 1px 4px rgba(0,0,0,.07);flex-shrink:0}
-  .entry b{font-size:13px;display:block}
-  .entry span:not(.eic):not(.arr){font-size:10.5px;color:var(--gray)}
-  .entry .arr{margin-left:auto;color:#bbb}
+  /* ===== 动作库 H1 区块(首页 + 训练共用) ===== */
+  .catrow{display:flex;gap:12px;overflow-x:auto;padding:2px 18px 6px;scrollbar-width:none}
+  .catrow::-webkit-scrollbar{display:none}
+  .cat{flex:0 0 64px;text-align:center;cursor:pointer}
+  .cat .c{width:56px;height:56px;border-radius:18px;background:var(--card);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:22px}
+  .cat.all .c{background:var(--ink);color:var(--lime);font-size:15px;font-weight:800}
+  .cat span{font-size:11px;color:#555}
   /* 动作库 全屏二级页 */
   .libpage{position:absolute;inset:0;background:#fff;z-index:60;display:none;flex-direction:column;padding-top:52px}
   .libpage.on{display:flex}
@@ -290,6 +290,20 @@
         <div class="st"><b>742</b><span>千卡消耗</span></div>
       </div>
 
+      <!-- 动作库:关键工具,H1 级区块 -->
+      <div class="sec">
+        <div class="px shead"><h2>动作库</h2><span class="more" onclick="openLib()">全部 ›</span></div>
+        <div class="catrow">
+          <div class="cat" onclick="openLib()"><div class="c">🧠</div><span>头颈</span></div>
+          <div class="cat" onclick="openLib()"><div class="c">💪</div><span>肩臂</span></div>
+          <div class="cat" onclick="openLib()"><div class="c">🫁</div><span>胸部</span></div>
+          <div class="cat" onclick="openLib()"><div class="c">🔙</div><span>背部</span></div>
+          <div class="cat" onclick="openLib()"><div class="c">🎯</div><span>核心</span></div>
+          <div class="cat" onclick="openLib()"><div class="c">🦵</div><span>臀腿</span></div>
+          <div class="cat all" onclick="openLib()"><div class="c">500+</div><span>全部动作</span></div>
+        </div>
+      </div>
+
       <!-- C 探索运营(薄层) -->
       <div class="sec">
         <div class="px shead"><h2>官方活动</h2><span class="more">全部 ›</span></div>
@@ -344,18 +358,22 @@
         <button class="obtn">重新生成</button>
       </div>
 
-      <!-- 工具入口:动作库=全屏二级页 -->
-      <div class="entryrow">
-        <div class="entry" onclick="openLib()">
-          <span class="eic">🗂</span>
-          <div><b>动作库</b><span>500+ 动作 · 按部位/器械</span></div>
-          <span class="arr">›</span>
+      <!-- 动作库:关键工具,H1 级区块 -->
+      <div class="sec">
+        <div class="px shead"><h2>动作库</h2><span class="more" onclick="openLib()">全部 ›</span></div>
+        <div class="catrow">
+          <div class="cat" onclick="openLib()"><div class="c">🧠</div><span>头颈</span></div>
+          <div class="cat" onclick="openLib()"><div class="c">💪</div><span>肩臂</span></div>
+          <div class="cat" onclick="openLib()"><div class="c">🫁</div><span>胸部</span></div>
+          <div class="cat" onclick="openLib()"><div class="c">🔙</div><span>背部</span></div>
+          <div class="cat" onclick="openLib()"><div class="c">🎯</div><span>核心</span></div>
+          <div class="cat" onclick="openLib()"><div class="c">🦵</div><span>臀腿</span></div>
+          <div class="cat all" onclick="openLib()"><div class="c">500+</div><span>全部动作</span></div>
         </div>
-        <div class="entry">
-          <span class="eic">＋</span>
-          <div><b>自定义模板</b><span>常练组合一键开练</span></div>
-          <span class="arr">›</span>
-        </div>
+      </div>
+      <div class="sec">
+        <div class="thin"><div class="cv" style="background:#fff;border:1.5px dashed var(--line)"></div>
+          <div><b>＋ 自定义模板</b><span>常练组合保存,一键开练</span></div><span class="arr">›</span></div>
       </div>
 
       <!-- 探索:内联货架(向下滚动到达) -->
