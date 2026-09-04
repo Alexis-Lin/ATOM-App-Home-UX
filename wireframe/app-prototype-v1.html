@@ -238,7 +238,7 @@
 </head>
 <body>
 <h1 class="pg">ATOM App 新框架交互原型 v1</h1>
-<p class="sub">iPhone 17 逻辑分辨率 402×874pt · 底部导航 {[首页 训练 成长 我的] + ◎ATOM}(D19)· 四 Tab 可点 · ◎ATOM 弹出 Agent 面板 · 训练 Tab=计划主页+动作库全屏二级页+探索内联(D17 v0.2,无顶部分段)· 灰块=占位,视觉语言另议(D6)</p>
+<p class="sub">iPhone 17 逻辑分辨率 402×874pt · 底部导航 {[首页 计划 成长 我的] + ◎ATOM}(D19 拍板)· 四 Tab 可点 · ◎ATOM 弹出 Agent 面板 · 计划 Programme Tab=每日一练置顶+计划管理+动作库 H1+探索内联(D17 v0.3,无顶部分段)· 灰块=占位,视觉语言另议(D6)</p>
 
 <div class="phone"><div class="island"></div><div class="screen">
   <div class="sbar"><span>9:41</span><span>🛜 ▐▌▐▌</span></div>
@@ -333,7 +333,32 @@
 
     <!-- ================= 训练(计划为主页,无顶部分段) ================= -->
     <div class="page" id="pg-train">
-      <div class="greet"><h2>训练</h2><span class="bell" onclick="openLib()">🔍</span></div>
+      <div class="greet"><h2>计划 <span style="font-size:13px;color:#999;font-weight:600">Programme</span></h2><span class="bell" onclick="openLib()">🔍</span></div>
+
+      <!-- 每日一练:置顶,马上开练 -->
+      <div class="today" style="margin-top:12px">
+        <div class="top" style="padding-bottom:10px">
+          <div class="lab">每日一练 · 今天</div>
+          <h3>上肢力量 · 推类日</h3>
+          <div class="meta">25 分钟 · 6 个动作 · 胸 / 肩 / 三头</div>
+        </div>
+        <div class="bot">
+          <div class="prog">第 <b>2/3</b> 周 · 本周 <b>2/3</b> 次</div>
+          <button class="gobtn">开始训练</button>
+        </div>
+      </div>
+
+      <div class="planwk">
+        <div class="hd">本期计划 · 第 2/3 周<span>上肢/下肢分化 · 每周 3 练</span></div>
+        <div class="prow"><span class="d">周二</span>下肢力量 · 蹲类<span class="done">✓ 已完成</span></div>
+        <div class="prow"><span class="d">周四</span>核心与体态<span class="done">✓ 已完成</span></div>
+        <div class="prow"><span class="d">今天</span>上肢力量 · 推类<span class="todaytag">今日</span><span class="go">开始 ›</span></div>
+        <div class="prow"><span class="d">周日</span>休息 · 拉伸恢复</div>
+      </div>
+      <div class="btnrow">
+        <button class="obtn" onclick="openAtom()">✦ 和 ATOM 调整计划</button>
+        <button class="obtn">重新生成</button>
+      </div>
 
       <div class="sec"><div class="px shead"><h2>我的目标</h2><span class="more">编辑 / 排序 ›</span></div></div>
       <div class="gcard">
@@ -344,18 +369,6 @@
       <div class="gcard">
         <div class="hd"><span class="pri p2">次目标</span><b>改善圆肩</b></div>
         <div class="quote">"圆肩显背厚" · 体态基线已建立</div>
-      </div>
-
-      <div class="planwk">
-        <div class="hd">本期计划 · 第 2/3 周<span>上肢/下肢分化 · 每周 3 练</span></div>
-        <div class="prow"><span class="d">周二</span>下肢力量 · 蹲类<span class="done">✓ 已完成</span></div>
-        <div class="prow"><span class="d">周四</span>核心与体态<span class="done">✓ 已完成</span></div>
-        <div class="prow"><span class="d">今天</span>上肢力量 · 推类<span class="todaytag">今日</span><span class="go" onclick="tab('home')">去执行 ›</span></div>
-        <div class="prow"><span class="d">周日</span>休息 · 拉伸恢复</div>
-      </div>
-      <div class="btnrow">
-        <button class="obtn" onclick="openAtom()">✦ 和 ATOM 调整计划</button>
-        <button class="obtn">重新生成</button>
       </div>
 
       <!-- 动作库:关键工具,H1 级区块 -->
@@ -526,7 +539,7 @@
   <div class="dock">
     <div class="tabgroup">
       <div class="tb on" id="tb-home" onclick="tab('home')"><span class="ic">🏠</span>首页</div>
-      <div class="tb" id="tb-train" onclick="tab('train')"><span class="ic">🏋️</span>训练</div>
+      <div class="tb" id="tb-train" onclick="tab('train')"><span class="ic">🏋️</span>计划</div>
       <div class="tb" id="tb-growth" onclick="tab('growth')"><span class="ic">📈</span>成长</div>
       <div class="tb" id="tb-me" onclick="tab('me')"><span class="ic">👤</span>我的</div>
     </div>
