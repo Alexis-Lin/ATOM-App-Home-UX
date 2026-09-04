@@ -1,6 +1,6 @@
 # ATOM App Home · 总纲（手机 App 首页 Home Tab 优化）
 
-> 版本：v0.4　|　日期：2026-08-04　|　受众：产品 / 设计 / 研发
+> 版本：v0.7　|　日期：2026-08-04　|　受众：产品 / 设计 / 研发
 > 性质：**工作总纲**。目标、范围、基线方案与待讨论决策集中在此;随讨论逐步拍板、扩写、拆分专项文档。
 > v0.2 变更：吸收 **v1 基线方案**（2026-06-08,见 `v1-基线方案/`）——补入现状问题盘点、基线信息架构,决策清单标记 v1 已定方向并并入其 6 个开放问题。
 > v0.3 变更：立意讨论(`ATOM-APP-01-首页立意-三区模型.md`)——首页从「内容货架」转向「PLAN 闭环每日渲染面」;接入 `ATOM-UserGoalPreference-and-OnBoarding` 仓(呼应点 P1–P8);新增 D13–D16。
@@ -93,14 +93,14 @@ BodyPark ATOM 手机 App 的首页 Home Tab 需要一轮优化设计。本项目
 
 | 文档 | 内容 | 状态 |
 |---|---|---|
-| 本文 `ATOM-APP-00-总纲.md` | 目标 / 范围 / 基线 / 原则 / 决策清单 | 🚧 v0.3 |
+| 本文 `ATOM-APP-00-总纲.md` | 目标 / 范围 / 基线 / 原则 / 决策清单 | 🚧 v0.7 |
 | `ATOM-APP-REF-Companion呼应点.md` | 设备端逻辑提炼参考 R1–R10 | ✅ |
 | `ATOM-APP-REF-目标偏好呼应点.md` | 目标偏好体系提炼参考 P1–P8（个性化引擎） | ✅ |
 | [`v1-基线方案/`](v1-基线方案/) | 历史阶段方案 v1（说明 + 可交互原型）,**只读存档,不再改写** | ✅ 基线 |
 | [`ATOM-APP-01-首页立意-三区模型.md`](ATOM-APP-01-首页立意-三区模型.md) | 立意:PLAN 渲染面 · 三区模型 · CTA 状态矩阵 · 社区承接 | 🚧 v0.1 讨论稿 |
 | [`ATOM-APP-02-信息架构与状态框架.md`](ATOM-APP-02-信息架构与状态框架.md) | 模块落位 · 五维状态体系 · A 区决策树 · 快照 HS-1~8 | 🚧 v0.1 讨论稿 |
-| [`ATOM-APP-03-计划Tab提案.md`](ATOM-APP-03-计划Tab提案.md) | 「训练」Tab:计划主页 + 动作库全屏二级页 + 分界规则 | 🚧 v0.2 讨论稿 |
-| [`ATOM-APP-04-Tab架构与模块聚类.md`](ATOM-APP-04-Tab架构与模块聚类.md) | 五 Tab × 九模块聚类:ATOM 中央按钮 · 分期路径 · 护栏 | 🚧 v0.1 讨论稿 |
+| [`ATOM-APP-03-计划Tab提案.md`](ATOM-APP-03-计划Tab提案.md) | 「计划 Programme」Tab:每日一练置顶 + 动作库全屏二级页 + 分界规则 | ✅ v0.3 拍板 |
+| [`ATOM-APP-04-Tab架构与模块聚类.md`](ATOM-APP-04-Tab架构与模块聚类.md) | 底部导航定稿 {[首页 计划 成长 我的][◎AI]} × 九模块聚类 · 迁移路径 · 护栏 | ✅ v0.3 拍板 |
 | `ATOM-APP-REF-竞品首页扫描.md` + [`research/`](research/) | 9 产品竞品扫描提炼 + 三路原始报告 | ✅ |
 | [`wireframe/home-wireframe-v0.html`](wireframe/home-wireframe-v0.html) | 低保真线框:三区 × HS-1~7 快照可切换 | 🚧 v0 |
 | [`wireframe/app-prototype-v1.html`](wireframe/app-prototype-v1.html) | 全 App 框架交互原型(iPhone17 尺寸 · 四 Tab + ◎ATOM 面板 · 深链) | 🚧 v1 |
